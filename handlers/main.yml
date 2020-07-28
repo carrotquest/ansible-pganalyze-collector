@@ -13,6 +13,7 @@
     pganalyze-collector --test
   register: pganalyze_test_result
   changed_when: false
+  ignore_errors: false
   failed_when:
     - pganalyze_test_result.rc == 0
     - "'Test submission successful' not in pganalyze_test_result.stderr"
