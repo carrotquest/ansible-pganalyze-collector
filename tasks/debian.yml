@@ -1,0 +1,33 @@
+---
+- name: install | add apt key
+  apt_key:
+    url: 'https://packages.pganalyze.com/pganalyze_signing_key.asc'
+    state: present
+  register: pganalize_apt_key
+
+- name: install | add repos
+  apt_repository:
+    repo: "deb [arch=amd64] https://packages.pganalyze.com/{{ ansible_distribution | lower }}/{{ ansible_distribution_release | lower }}/ stable main"
+    state: present
+  register: pganalize_apt_sourcelist
+
+- name: install | update package cache
+  apt:
+    update_cache: true
+  when:
+    - pganalize_apt_key.changed or pganalize_apt_sourcelist.changed
+
+- name: install | install or update packages
+  apt:
+    name:
+      - "{{ pganalyze_package }}{% if pganalyze_version | bool and pganalyze_version != 'latest' %}={{ pganalyze_version }}*{% endif %}"
+    state: latest
+    install_recommends: true
+    force: true
+    force_apt_get: true
+    dpkg_options: "{{ dpkg_force_overwrite_configs | ternary('force-confdef,force-confnew', 'force-confdef,force-confold') }}"
+    update_cache: true
+    cache_valid_time: 3600
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+    RUNLEVEL: 1

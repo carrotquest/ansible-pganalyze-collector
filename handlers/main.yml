@@ -1,0 +1,18 @@
+---
+# handlers file for ansible-pganalyze-collector
+- name: restart pganalyze-collector
+  service:
+    name: pganalyze-collector
+    state: "{{ pganalyze_service_state }}"
+    enabled: true
+  notify:
+    - test pganalyze-collector
+
+- name: test pganalyze-collector
+  command: |
+    pganalyze-collector --test
+  register: pganalyze_test_result
+  changed_when: false
+  failed_when:
+    - pganalyze_test_result.rc == 0
+    - "'Test submission successful' not in pganalyze_test_result.stderr"

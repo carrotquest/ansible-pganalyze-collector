@@ -1,0 +1,13 @@
+---
+# tasks file for ansible-pganalyze-collector
+- include_tasks: debian.yml
+  when:
+    - ansible_os_family == 'Debian'
+  tags:
+    - always
+
+- include_tasks: configure.yml
+  tags:
+    - always
+
+- meta: flush_handlers

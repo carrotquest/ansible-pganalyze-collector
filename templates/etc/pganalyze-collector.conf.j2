@@ -1,0 +1,29 @@
+{{ ansible_managed | comment }}
+[pganalyze]
+api_key: {{ pganalyze_api_key }}
+
+{% for server in pganalyze_servers %}
+[{{ server.name }}]
+{%   if server.api_key is defined %}api_key: {{ server.api_key }}
+{%   endif %}
+{%   if server.db_name is defined %}db_name: {{ server.db_name }}
+{%   endif %}
+{%   if server.db_username is defined %}db_username: {{ server.db_username }}
+{%   endif %}
+{%   if server.db_password is defined %}db_password: {{ server.db_password }}
+{%   endif %}
+{%   if server.db_host is defined %}db_host: {{ server.db_host }}
+{%   endif %}
+{%   if server.db_port is defined %}db_port: {{ server.db_port }}
+{%   endif %}
+{%   if server.aws_db_instance_id is defined %}aws_db_instance_id: {{ server.aws_db_instance_id }}
+{%   endif %}
+{%   if server.aws_region is defined %}aws_region: {{ server.aws_region }}
+{%   endif %}
+{%   if server.azure_db_server_name is defined %}azure_db_server_name: {{ server.azure_db_server_name }}
+{%   endif %}
+{%   if server.gcp_project_id is defined %}gcp_project_id: {{ server.gcp_project_id }}
+{%   endif %}
+{%   if server.gcp_cloudsql_instance_id is defined %}gcp_cloudsql_instance_id: {{ server.gcp_cloudsql_instance_id }}
+{%   endif %}
+{% endfor %}
