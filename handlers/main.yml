@@ -1,19 +1,23 @@
 ---
 # handlers file for ansible-pganalyze-collector
-- name: restart pganalyze-collector
+- name: handle pganalyze-collector service state is 'pgbouncer_service_state'
   service:
     name: pganalyze-collector
     state: "{{ pganalyze_service_state }}"
     enabled: true
-  notify:
-    - test pganalyze-collector
+  listen:
+    - restart pganalyze-collector
 
-- name: test pganalyze-collector
+- name: Check pganalyze-collector connectivity
   command: |
     pganalyze-collector --test
   register: pganalyze_test_result
   changed_when: false
-  ignore_errors: false
   failed_when:
     - pganalyze_test_result.rc == 0
     - "'Test submission successful' not in pganalyze_test_result.stderr"
+  when:
+    - pganalyze_service_state != 'stopped'
+    - pganalyze_postgresql_state != 'stopped'
+  listen:
+    - restart pganalyze-collector

@@ -31,3 +31,5 @@
   environment:
     DEBIAN_FRONTEND: noninteractive
     RUNLEVEL: 1
+  notify:
+    - restart pganalyze-collector

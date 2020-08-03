@@ -10,6 +10,8 @@ pganalyze_group: pganalyze
 
 pganalyze_service_state: restarted
 
+pganalyze_postgresql_state: started
+
 pganalyze_api_key: ''
 pganalize_server_api_key: ''
 pganalyze_db_name: '*'
