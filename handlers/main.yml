@@ -1,5 +1,14 @@
 ---
 # handlers file for ansible-pganalyze-collector
+
+- name: to be sure that systemd config is reload
+  systemd:
+    daemon_reload: true
+  when:
+    - ansible_service_mgr == 'systemd'
+  listen:
+    - restart pganalyze-collector
+
 - name: handle pganalyze-collector service state is 'pgbouncer_service_state'
   service:
     name: pganalyze-collector
@@ -8,7 +17,7 @@
   listen:
     - restart pganalyze-collector
 
-- name: Check pganalyze-collector connectivity
+- name: check pganalyze-collector connectivity
   command: |
     pganalyze-collector --test
   register: pganalyze_test_result
