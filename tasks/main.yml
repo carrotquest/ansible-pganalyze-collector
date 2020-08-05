@@ -15,4 +15,4 @@
 - name: check pganalyze-collector service state
   service:
     name: pganalyze-collector
-    state: "{{ pganalyze_service_state == 'stopped' | ternary('stopped', 'started') }}"
+    state: "{{ (pganalyze_service_state == 'stopped') | ternary('stopped', 'started') }}"
