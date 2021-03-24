@@ -8,3 +8,13 @@
     mode: 0640
   notify:
     - restart pganalyze-collector
+
+- name: configure | create systemd config for service
+  template:
+    src: systemd/pganalyze-collector.service.j2
+    dest: /lib/systemd/system/pganalyze-collector.service
+    owner: "{{ pganalyze_user }}"
+    group: "{{ pganalyze_group }}"
+    mode: 0640
+  notify:
+    - restart pganalyze-collector
