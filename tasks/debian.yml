@@ -20,7 +20,7 @@
 - name: install | install or update packages
   apt:
     name:
-      - "{{ pganalyze_package }}{% if pganalyze_version | bool and pganalyze_version != 'latest' %}={{ pganalyze_version }}*{% endif %}"
+      - "{{ pganalyze_package }}{% if pganalyze_version != 'latest' %}={{ pganalyze_version }}*{% endif %}"
     state: latest
     install_recommends: true
     force: true
