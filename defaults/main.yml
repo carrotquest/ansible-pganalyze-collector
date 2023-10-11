@@ -4,6 +4,7 @@ dpkg_force_overwrite_configs: false
 
 pganalyze_package: pganalyze-collector
 pganalyze_version: latest
+pganalyze_deb_url: https://packages.pganalyze.com/{{ ansible_distribution | lower }}/{{ ansible_distribution_release | lower }}/pool/main/p/{{ pganalyze_package }}/{{ pganalyze_package }}_{{ pganalyze_version }}_amd64.deb
 
 pganalyze_user: pganalyze
 pganalyze_group: pganalyze

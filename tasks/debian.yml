@@ -17,10 +17,10 @@
   when:
     - pganalize_apt_key.changed or pganalize_apt_sourcelist.changed
 
-- name: install | install or update packages
+- name: install | install or update packages from apt
   apt:
     name:
-      - "{{ pganalyze_package }}{% if pganalyze_version != 'latest' %}={{ pganalyze_version }}*{% endif %}"
+      - "{{ pganalyze_package }}"
     state: latest
     install_recommends: true
     force: true
@@ -28,8 +28,28 @@
     dpkg_options: "{{ dpkg_force_overwrite_configs | ternary('force-confdef,force-confnew', 'force-confdef,force-confold') }}"
     update_cache: true
     cache_valid_time: 3600
+    allow_downgrade: true
   environment:
     DEBIAN_FRONTEND: noninteractive
     RUNLEVEL: 1
   notify:
     - restart pganalyze-collector
+  when: pganalyze_version == 'latest'
+
+- name: install | install or update packages from deb
+  apt:
+    deb: "{{ pganalyze_deb_url }}"
+    state: present
+    install_recommends: true
+    force: true
+    force_apt_get: true
+    dpkg_options: "{{ dpkg_force_overwrite_configs | ternary('force-confdef,force-confnew', 'force-confdef,force-confold') }}"
+    update_cache: true
+    cache_valid_time: 3600
+    allow_downgrade: true
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+    RUNLEVEL: 1
+  notify:
+    - restart pganalyze-collector
+  when: pganalyze_version != 'latest'
