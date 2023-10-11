@@ -24,7 +24,7 @@
   changed_when: false
   failed_when:
     - pganalyze_test_result.rc == 0
-    - "'Test submission successful' not in pganalyze_test_result.stderr"
+    - "'Test submission successful' not in pganalyze_test_result.stderr or 'Test collection successful' not in pganalyze_test_result.stderr"
   when:
     - pganalyze_service_state != 'stopped'
     - pganalyze_postgresql_state != 'stopped'
